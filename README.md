@@ -1,5 +1,7 @@
 # material-invoice-preaudit-platform
 材料费发票智能预审与管理平台
+## 演示视频
+b站: 【材料费发票智能预审与管理平台】 https://www.bilibili.com/video/BV1q1p16UEiD/?share_source=copy_web&vd_source=f4cfa2d211a9952786dd69ee31f0ada5
 ## 环境要求
 后端:JDK21,Maven,MYSQL,操作系统
 
