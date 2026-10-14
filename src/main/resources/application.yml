@@ -1,0 +1,99 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: material-invoice-preaudit-platform
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/invoice_preaudit?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB        # 单个文件最大 50MB
+      max-request-size: 200MB    # 一次请求总共最大 200MB
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.liuqiya.invoice.entity
+  configuration:
+    map-underscore-to-camel-case: true   # 下划线转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 控制台打印 SQL（开发用）
+  global-config:
+    db-config:
+      id-type: auto                       # 主键自增
+      logic-delete-field: deleted         # 逻辑删除字段
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: default
+      paths-to-match: /**
+      packages-to-scan: com.liuqiya.invoice.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+app:
+  # 文件存储根目录（本地存储，考核阶段够用）
+  file:
+    storage-path: D:/JavaCode/material-invoice-preaudit-platform/files
+    # 上传子目录前缀（将来换 OSS 时作为 bucket 内前缀）
+    upload-prefix: upload
+    # 允许上传的文件类型
+    allowed-extensions: pdf,zip,jpg,jpeg,png
+    # 单个文件最大 50MB（和 spring.servlet.multipart 保持一致）
+    max-file-size: 52428800
+
+
+  # JWT 配置
+  jwt:
+    secret: material-invoice-preaudit-platform-secret-key-2026-please-change-me
+    expire-hours: 24
+    header: Authorization
+    prefix: "Bearer "
+
+  ai:
+    type: qwen
+    model: qwen-plus
+    temperature: 0.1                        # 温度，越低越稳定
+    timeout-seconds: 60                     # 超时秒数
+    max-retry: 2                            # 失败重试次数
+
+  ocr:
+    type: aliyun                    # 标识用阿里云 OCR
+    endpoint: ocr-api.cn-shanghai.aliyuncs.com
+    region-id: cn-shanghai
+    dpi: 200                                # PDF 转图片的 DPI
+    min-text-length: 20                     # 文本层少于这个长度就走 OCR
+
+  # 规则引擎阈值（避免硬编码，方便后面做配置化）
+  rule:
+    asset-threshold: 1000          # 单价 >= 1000 视为资产
+    low-value-threshold: 500       # 500 <= 单价 < 1000 视为低值品
+    week-limit: 1000               # 同自然周同商家累计超过该值需补凭证
+    week-reject-limit: 3000        # 超过该值直接拒绝
+
+# ========== 日志 ==========
+logging:
+  level:
+    root: info
+    com.liuqiya.invoice: debug
+    org.springframework.web: info
