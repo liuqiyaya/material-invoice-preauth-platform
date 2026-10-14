@@ -23,7 +23,7 @@ public class UploadResultVO {
 
     /**
      * 成功数
-     * */
+     */
     private Integer successCount;
 
     /**
@@ -40,23 +40,23 @@ public class UploadResultVO {
     public static class Item {
         /**
          * 原始文件名
-         * */
+         */
         private String fileName;
         /**
          * 发票 id（成功才有）
-         * */
+         */
         private Long invoiceId;
         /**
          * 文件 id（成功才有）
-         * */
+         */
         private Long fileId;
         /**
          * 状态：SUCCESS / FAILED
-         * */
+         */
         private String status;
         /**
          * 失败原因（失败才有）
-         * */
+         */
         private String errorMsg;
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvoiceDetailVO {
-    // ============ 主表字段 ============
+    // 主表字段
     private Long id;
     private Long submitterId;
 
@@ -54,13 +54,13 @@ public class InvoiceDetailVO {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
-    // ============ 商品明细 ============
+    // 商品明细
     private List<ItemVO> items = new ArrayList<>();
 
-    // ============ 凭证组 ============
+    // 凭证组
     private List<EvidenceGroupVO> evidenceGroups = new ArrayList<>();
 
-    // ============ 操作日志 ============
+    // 操作日志
     private List<LogVO> logs = new ArrayList<>();
 
     @Data

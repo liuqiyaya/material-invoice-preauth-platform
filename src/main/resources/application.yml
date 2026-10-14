@@ -26,12 +26,12 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   type-aliases-package: com.liuqiya.invoice.entity
   configuration:
-    map-underscore-to-camel-case: true   # 下划线转驼峰
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 控制台打印 SQL（开发用）
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      id-type: auto                       # 主键自增
-      logic-delete-field: deleted         # 逻辑删除字段
+      id-type: auto
+      logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
 
@@ -52,14 +52,14 @@ knife4j:
     language: zh_cn
 
 app:
-  # 文件存储根目录（本地存储，考核阶段够用）
+  # 文件存储根目录
   file:
     storage-path: D:/JavaCode/material-invoice-preaudit-platform/files
-    # 上传子目录前缀（将来换 OSS 时作为 bucket 内前缀）
+    # 上传子目录前缀
     upload-prefix: upload
     # 允许上传的文件类型
     allowed-extensions: pdf,zip,jpg,jpeg,png
-    # 单个文件最大 50MB（和 spring.servlet.multipart 保持一致）
+    # 单个文件最大 50MB
     max-file-size: 52428800
 
 
@@ -78,13 +78,13 @@ app:
     max-retry: 2                            # 失败重试次数
 
   ocr:
-    type: aliyun                    # 标识用阿里云 OCR
+    type: aliyun                    # 用阿里云 OCR
     endpoint: ocr-api.cn-shanghai.aliyuncs.com
     region-id: cn-shanghai
     dpi: 200                                # PDF 转图片的 DPI
     min-text-length: 20                     # 文本层少于这个长度就走 OCR
 
-  # 规则引擎阈值（避免硬编码，方便后面做配置化）
+  # 规则引擎阈值
   rule:
     asset-threshold: 1000          # 单价 >= 1000 视为资产
     low-value-threshold: 500       # 500 <= 单价 < 1000 视为低值品

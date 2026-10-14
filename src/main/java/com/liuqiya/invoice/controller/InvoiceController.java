@@ -36,7 +36,7 @@ public class InvoiceController {
         Claims claims = ThreadLocalUtil.get();
         Long adminId = Long.valueOf(claims.get("id").toString());
         UploadResultVO uploadResultVO = invoiceService.uploadInvoiceFile(files, adminId);
-        // ============ 异步触发预审 ============
+        // 异步触发预审
         if (uploadResultVO != null && uploadResultVO.getItems() != null) {
             for (UploadResultVO.Item item : uploadResultVO.getItems()) {
                 if ("SUCCESS".equals(item.getStatus()) && item.getInvoiceId() != null) {

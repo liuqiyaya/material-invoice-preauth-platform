@@ -17,14 +17,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")                    // 拦截所有路径
                 .excludePathPatterns(                      // 排除不需要认证的路径
-                        // ===== 登录注册 =====
+                        // 登录注册
                         "/admin/login",
                         "/admin/register",
 
-                        // ===== 系统 =====
+                        // 系统错误处理
                         "/error",
 
-                        // ===== API 文档 =====
+                        // API 文档
                         "/doc.html",
                         "/webjars/**",
                         "/v3/api-docs/**",

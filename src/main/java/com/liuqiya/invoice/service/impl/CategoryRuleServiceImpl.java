@@ -27,6 +27,9 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
     @Autowired
     private OperationLogMapper operationLogMapper;
 
+    /**
+     * 查询品类规则列表
+     */
     @Override
     public PageVO<CategoryRule> getCategoryRuleList(CategoryRuleQueryDTO query) {
         long pageNum = query.getPageNum() == null || query.getPageNum() < 1 ? 1 : query.getPageNum();
@@ -52,6 +55,9 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
         return PageVO.of(page.getTotal(), pageNum, pageSize, page.getRecords());
     }
 
+    /**
+     * 查询品类规则详情
+     */
     @Override
     public CategoryRule getCategoryRuleDetail(Long id) {
         if (id == null) { throw new BizException(400, "id 不能为空");}
@@ -60,6 +66,9 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
         return rule;
     }
 
+    /**
+     * 新增品类规则
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long addCategoryRule(CategoryRuleDTO dto, Long operatorId) {
@@ -115,6 +124,9 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
         log.info("【品类规则】修改 id={}", dto.getId());
     }
 
+    /**
+     * 删除品类规则
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteCategoryRule(Long id, Long operatorId) {
@@ -129,6 +141,9 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
         log.info("【品类规则】删除 id={}", id);
     }
 
+    /**
+     * 切换品类规则状态
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void toggleEnabled(Long id, Integer enabled, Long operatorId) {
@@ -148,8 +163,10 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
         log.info("【品类规则】切换状态 id={}, enabled={}", id, enabled);
     }
 
-
-    private void validateDTO(CategoryRuleDTO dto) {
+    /**
+     * 校验品类规则DTO
+     */
+       private void validateDTO(CategoryRuleDTO dto) {
         if (!StringUtils.hasText(dto.getCategoryName())) {
             throw new BizException(400, "品类名不能为空");
         }
@@ -163,6 +180,9 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
         }
     }
 
+    /**
+     * 生成品类规则快照
+     */
     private String snapshot(CategoryRule r) {
         return "name=" + r.getCategoryName()
                 + ", keywords=" + r.getKeywords()
@@ -171,6 +191,10 @@ public class CategoryRuleServiceImpl implements CategoryRuleService {
                 + ", remark=" + r.getRemark();
     }
 
+
+    /**
+     * 写操作日志
+     */
     private void writeLog(Long operatorId, String action, String before, String after) {
         try {
             OperationLog log = new OperationLog();

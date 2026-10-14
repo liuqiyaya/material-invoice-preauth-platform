@@ -48,7 +48,7 @@ public class PaymentEvidenceServiceImpl implements PaymentEvidenceService {
     @Transactional(rollbackFor = Exception.class)
     public Long uploadPaymentEvidenceGroup(Long invoiceId, MultipartFile[] screenshots,
                             MultipartFile[] payments, String remark) {
-        // ============ 参数校验 ============
+        // 参数校验
         if (invoiceId == null) {
             throw new BizException(400, "invoiceId 不能为空");
         }
@@ -143,7 +143,7 @@ public class PaymentEvidenceServiceImpl implements PaymentEvidenceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void reviewPaymentEvidenceGroup(Long groupId, Boolean pass, String remark, Long reviewerId) {
-        // ============ 参数校验 ============
+        // 参数校验
         if (groupId == null) {
             throw new BizException(400, "groupId 不能为空");
         }
@@ -154,13 +154,13 @@ public class PaymentEvidenceServiceImpl implements PaymentEvidenceService {
             throw new BizException(400, "审核人不能为空");
         }
 
-        // ============ 查组 ============
+        // 查组
         PaymentEvidenceGroup group = groupMapper.selectById(groupId);
         if (group == null) {
             throw new BizException(404, "凭证组不存在：" + groupId);
         }
 
-        // ============ 状态校验 ============
+        // 状态校验
         if (group.getStatus() == EvidenceGroupStatus.APPROVED) {
             throw new BizException(400, "该凭证组已通过，不能重复审核");
         }
@@ -171,7 +171,7 @@ public class PaymentEvidenceServiceImpl implements PaymentEvidenceService {
         log.info("【凭证审核】groupId={}, pass={}, reviewerId={}, remark={}",
                 groupId, pass, reviewerId, remark);
 
-        // ============ 更新组 ============
+        // 更新组
         group.setStatus(pass ? EvidenceGroupStatus.APPROVED : EvidenceGroupStatus.REJECTED);
         group.setReviewerId(reviewerId);
         group.setReviewTime(LocalDateTime.now());
@@ -182,7 +182,7 @@ public class PaymentEvidenceServiceImpl implements PaymentEvidenceService {
         //写日志
         writeLog(invoiceId, reviewerId, "EVIDENCE_REVIEW",
                 "groupId=" + groupId + ", pass=" + pass + ", remark=" + remark);
-        // ============ 联动 invoice 状态 ============
+        // 联动 invoice 状态
         syncInvoiceStatus(invoiceId,reviewerId);
 
 

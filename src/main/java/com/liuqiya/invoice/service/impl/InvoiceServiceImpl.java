@@ -237,7 +237,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         RuleResultDTO result = new RuleResultDTO();
         result.setInvoiceId(invoice.getId());
 
-        // ============ 第一步：逐项品类 + 单价判定 ============
+        // 逐项品类 + 单价判定
         List<StructuredInvoice.Item> items = structured.getItems();
         if (items == null || items.isEmpty()) {
             result.setQualifyStatus(QualifyStatus.PENDING_MANUAL);
@@ -286,7 +286,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         result.setItemResults(itemResults);
         result.setCategoryResult(worstCategory);
 
-        // ============ 第二步：品类判定 ============
+        // 品类判定
         if (worstCategory == CategoryLevel.REJECT) {
             result.setQualifyStatus(QualifyStatus.REJECTED);
             result.setRejectReason("存在不可报销商品");
@@ -299,14 +299,14 @@ public class InvoiceServiceImpl implements InvoiceService {
             return result;
         }
 
-        // ============ 第三步：单价判定 ============
+        // 单价判定
         if (hasAsset) {
             result.setQualifyStatus(QualifyStatus.REJECTED);
             result.setRejectReason("存在单价 ≥ " + assetThreshold + " 元资产商品，不能走材料费报销");
             return result;
         }
 
-        // ============ 第四步：周累计判定 ============
+        // 周累计判定
         String sellerTaxNo = invoice.getSellerTaxNo();
         LocalDate weekStart = invoice.getWeekStart();
 
@@ -342,7 +342,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             return result;
         }
 
-        // ============ 第五步：低值品需要补凭证 ============
+        // 低值品需要补凭证
         if (hasLowValue) {
             result.setQualifyStatus(QualifyStatus.PENDING_EVIDENCE);
             result.setEvidenceRequired(1);
@@ -350,7 +350,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             return result;
         }
 
-        // ============ 通过 ============
+        // 通过
         result.setQualifyStatus(QualifyStatus.APPROVED);
         return result;
     }
@@ -510,8 +510,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         log.info("【人工修改】invoiceId={}, operatorId={}, remark={}",
                 dto.getInvoiceId(), operatorId, dto.getRemark());
 
-        // ============ 1. 修改发票主表 ============
-        // ⚠️ 记录 before 快照（只记要改的字段）
+        // 1. 修改发票主表
+        //  记录 before 快照（只记要改的字段）
         InvoiceSnapshot before = snapshot(invoice);
 
         boolean changed = false;
@@ -579,7 +579,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             log.info("【人工修改】invoiceId={} 主表无变化", dto.getInvoiceId());
         }
 
-        // ============ 2. 修改商品明细 ============
+        // 2. 修改商品明细
         if (dto.getItems() != null) {
             List<InvoiceItem> oldItems = invoiceItemMapper.selectList(
                     new LambdaQueryWrapper<InvoiceItem>()
@@ -629,7 +629,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateInvoiceStatus(InvoiceStatusUpdateDTO dto, Long operatorId) {
-        // ============ 校验 ============
+        // 校验
         if (dto == null || dto.getInvoiceId() == null) {
             throw new BizException(400, "invoiceId 不能为空");
         }
@@ -698,7 +698,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         List<Invoice> candidates = new ArrayList<>();
 
-        // ============ 强匹配：invoice_no + seller_tax_no ============
+        // 强匹配：invoice_no + seller_tax_no
         if (StringUtils.hasText(current.getInvoiceNo())
                 && StringUtils.hasText(current.getSellerTaxNo())) {
             List<Invoice> strong = invoiceMapper.selectList(
@@ -710,7 +710,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             candidates.addAll(strong);
         }
 
-        // ============ 弱匹配：seller_tax_no + invoice_date + total_amount ============
+        // 弱匹配：seller_tax_no + invoice_date + total_amount
         if (StringUtils.hasText(current.getSellerTaxNo())
                 && current.getInvoiceDate() != null
                 && current.getTotalAmount() != null) {
@@ -1255,7 +1255,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (old == QualifyStatus.REJECTED) {
             throw new BizException(400, "发票已拒绝，不能取消");
         }
-        // ⚠️ 已提交财务的不能取消
+        // 已提交财务的不能取消
         if (invoice.getFinanceStatus() == FinanceStatus.SUBMITTED) {
             throw new BizException(400, "已提交财务，不能取消");
         }
