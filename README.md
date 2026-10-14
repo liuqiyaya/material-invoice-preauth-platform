@@ -2,19 +2,27 @@
 材料费发票智能预审与管理平台
 ## 环境要求
 后端:JDK21,Maven,MYSQL,操作系统
+
 前端:NODE.js
+
 OCR调用:阿里云OCR
+
 AI调用:阿里云百炼 qwen-plus模型
 ## 环境变量
 后端配置环境变量:
+
 DASHSCOPE_API_KEY-通义千问 API Key
+
 ALIBABA_CLOUD_ACCESS_KEY_ID-阿里云 RAM 用户 AccessKey
+
 ALIBABA_CLOUD_ACCESS_KEY_SECRET-阿里云 RAM 用户 Secret
 ## 启动方式
 后端启动:直接运行,访问http://localhost:8080
+
 前端:终端输入npm run dev,访问http://localhost:5173
 ## 主要技术选型
 后端:Springboot,Mybatis-Plus,MYSQL,jwt,BCrypt,PDFBox,阿里云 OCR,qwen-plus
+
 前端:Vue 3 + Vite + TypeScript,Element Plus,Pinia,Axios
 ## AI方案
 AI参与结构化和品类审核
