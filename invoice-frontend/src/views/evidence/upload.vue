@@ -2,10 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, type UploadFile } from 'element-plus'
-import { uploadEvidence, listEvidence } from '@/api/evidence'
+import { uploadEvidence } from '@/api/evidence'
 import { getInvoiceDetail, type InvoiceDetailVO } from '@/api/invoice'
-import { EVIDENCE_STATUS_MAP } from '@/constants/status'
-import { formatDateTime } from '@/utils/format'
 
 const route = useRoute()
 const router = useRouter()
@@ -25,7 +23,7 @@ async function loadInvoice() {
   loading.value = true
   try {
     invoice.value = await getInvoiceDetail(invoiceId.value)
-  } catch (e) {
+  } catch {
     ElMessage.error('发票信息加载失败')
   } finally {
     loading.value = false
@@ -33,16 +31,16 @@ async function loadInvoice() {
 }
 
 // 选择文件
-function handleScreenshotChange(file: UploadFile, files: UploadFile[]) {
+function handleScreenshotChange(_file: UploadFile, files: UploadFile[]) {
   screenshotFiles.value = files.map((f) => f.raw as File).filter(Boolean)
 }
-function handleScreenshotRemove(file: UploadFile, files: UploadFile[]) {
+function handleScreenshotRemove(_file: UploadFile, files: UploadFile[]) {
   screenshotFiles.value = files.map((f) => f.raw as File).filter(Boolean)
 }
-function handlePaymentChange(file: UploadFile, files: UploadFile[]) {
+function handlePaymentChange(_file: UploadFile, files: UploadFile[]) {
   paymentFiles.value = files.map((f) => f.raw as File).filter(Boolean)
 }
-function handlePaymentRemove(file: UploadFile, files: UploadFile[]) {
+function handlePaymentRemove(_file: UploadFile, files: UploadFile[]) {
   paymentFiles.value = files.map((f) => f.raw as File).filter(Boolean)
 }
 
@@ -69,7 +67,7 @@ async function handleUpload() {
     setTimeout(() => {
       router.push(`/invoice/detail/${invoiceId.value}`)
     }, 800)
-  } catch (e) {
+  } catch {
     // 拦截器已弹错
   } finally {
     uploading.value = false

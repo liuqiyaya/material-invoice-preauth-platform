@@ -59,7 +59,7 @@ async function handleSubmit(): Promise<void> {
     setTimeout(() => {
       router.replace('/login')
     }, 600)
-  } catch (e) {
+  } catch {
   } finally {
     submitting.value = false
   }

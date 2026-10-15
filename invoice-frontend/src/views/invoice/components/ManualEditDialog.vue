@@ -4,8 +4,6 @@ import { ElMessage } from 'element-plus'
 import { manualEditInvoice, type InvoiceDetailVO } from '@/api/invoice'
 import {
   QUALIFY_STATUS_MAP,
-  CATEGORY_LEVEL_MAP,
-  PRICE_TYPE_MAP,
 } from '@/constants/status'
 
 const props = defineProps<{
@@ -137,7 +135,7 @@ async function handleSubmit() {
     ElMessage.success('修改成功')
     emit('success')
     handleClose()
-  } catch (e) {
+  } catch {
   } finally {
     submitting.value = false
   }

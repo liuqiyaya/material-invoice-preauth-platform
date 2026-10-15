@@ -35,7 +35,7 @@ async function fetchDetail() {
   loading.value = true
   try {
     detail.value = await getInvoiceDetail(invoiceId.value)
-  } catch (e) {
+  } catch {
   } finally {
     loading.value = false
   }
@@ -66,10 +66,6 @@ function handleDownload() {
   downloadFile(detail.value.sourceFileKey, detail.value.sourceFileName)
 }
 
-function handlePreviewFile(filePath: string) {
-  downloadFile(filePath, filePath.split('/').pop() || 'file')
-}
-
 async function handleSubmitFinance() {
   if (!detail.value) return
   try {
@@ -84,7 +80,7 @@ async function handleSubmitFinance() {
     })
     ElMessage.success('已提交财务')
     fetchDetail()
-  } catch (e) {}
+  } catch {}
 }
 
 async function handleReimburse() {
@@ -108,7 +104,7 @@ async function handleReimburse() {
     })
     ElMessage.success('已标记报销成功')
     fetchDetail()
-  } catch (e) {}
+  } catch {}
 }
 
 async function handleCancel() {
@@ -124,7 +120,7 @@ async function handleCancel() {
     })
     ElMessage.success('已取消')
     fetchDetail()
-  } catch (e) {}
+  } catch {}
 }
 
 const editDialogVisible = ref(false)

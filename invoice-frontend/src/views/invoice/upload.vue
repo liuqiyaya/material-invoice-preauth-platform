@@ -11,12 +11,12 @@ const uploading = ref(false)
 const result = ref<UploadResultVO | null>(null)
 
 // 选择文件时收集
-function handleChange(file: UploadFile, files: UploadFile[]) {
+function handleChange(_file: UploadFile, files: UploadFile[]) {
   fileList.value = files.map((f) => f.raw as File).filter(Boolean)
 }
 
 // 移除文件
-function handleRemove(file: UploadFile, files: UploadFile[]) {
+function handleRemove(_file: UploadFile, files: UploadFile[]) {
   fileList.value = files.map((f) => f.raw as File).filter(Boolean)
 }
 
@@ -42,8 +42,8 @@ async function handleUpload() {
     const data = await uploadInvoices(fileList.value)
     result.value = data
     ElMessage.success(`上传完成：成功 ${data.successCount}，失败 ${data.failCount}`)
-  } catch (e) {
-    // 拦截器已弹错误
+  } catch {
+    // 拦截器已弹错
   } finally {
     uploading.value = false
   }

@@ -44,7 +44,7 @@ async function fetchList() {
     const data = await listCategoryRule(query)
     records.value = data.records
     total.value = data.total
-  } catch (e) {
+  } catch {
   } finally {
     loading.value = false
   }
@@ -112,7 +112,7 @@ async function handleSubmit() {
     }
     dialogVisible.value = false
     fetchList()
-  } catch (e) {
+  } catch {
   } finally {
     submitting.value = false
   }
@@ -130,7 +130,7 @@ async function handleDelete(row: CategoryRule) {
     await deleteCategoryRule(row.id)
     ElMessage.success('删除成功')
     fetchList()
-  } catch (e) {}
+  } catch {}
 }
 
 async function handleToggle(row: CategoryRule) {
@@ -139,7 +139,7 @@ async function handleToggle(row: CategoryRule) {
     await toggleCategoryRule(row.id, target)
     ElMessage.success(target === 1 ? '已启用' : '已禁用')
     fetchList()
-  } catch (e) {}
+  } catch {}
 }
 
 onMounted(() => {

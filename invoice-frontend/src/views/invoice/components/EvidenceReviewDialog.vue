@@ -50,7 +50,7 @@ async function handleSubmit() {
     ElMessage.success(pass.value ? '已通过' : '已拒绝')
     emit('success')
     handleClose()
-  } catch (e) {
+  } catch {
   } finally {
     submitting.value = false
   }

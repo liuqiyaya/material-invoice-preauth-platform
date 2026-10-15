@@ -35,7 +35,7 @@ async function fetchList() {
     const data = await listInvoice(params)
     records.value = data.records
     total.value = data.total
-  } catch (e) {
+  } catch {
     // 错误由 http 拦截器统一处理
   } finally {
     loading.value = false
